@@ -14,7 +14,7 @@ import java.util.Date;
 public class Servlet1 extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=utf-8");
-        String dateStr = "2018-03-01";
+        String dateStr = "2020-03-01";
         Date date = DateUtil.parse(dateStr);
         String format = DateUtil.format(date, "yyyy/MM/dd");
         response.getWriter().write(format);
