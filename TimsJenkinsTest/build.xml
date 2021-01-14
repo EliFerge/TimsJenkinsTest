@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="TimsJenkinsTest" basedir="." default="makewar">
+    <property name="classpath_lib" value="WebContent/WEB-INF/lib" />
+    <property name="sources" value="${basedir}/src" />
+    <path id="classpath">
+        <!--添加lib 中的jar 包到软件中-->
+        <fileset dir="${classpath_lib}">
+            <include name="*.jar" />
+        </fileset>
+        <!--添加lib 之外的包,如果需要添加就可以放开该处
+        <fileset dir="E:\tools\tomcat7.0\lib">
+        <include name="*.jar" />
+        </fileset>-->
+    </path>
+    <property name="debuglevel" value="source,lines,vars" />
+    <property name="target" value="1.8" />
+    <property name="source" value="1.8" />
+    <target name="init">
+        <!--该出value为war导出的路径 最后的效果是这样\CBEUatTest\build\CBEUatTest.war-->
+        <property name="build" value="build/">
+        </property>
+        <property name="src" value="src">
+        </property>
+        <delete dir="${build}">
+        </delete>
+        <mkdir dir="${build}" />
+        <mkdir dir="${build}\WEB-INF" />
+        <mkdir dir="${build}\WEB-INF\classes" />
+        <mkdir dir="${build}\WEB-INF\lib" />
+        <copy todir="${build}">
+            <fileset dir="${basedir}\WebContent">
+                <include name="WEB-INF/**" />
+                <include name="**" />
+            </fileset>
+        </copy>
+    </target>
+    <target name="complie" depends="init">
+        <!--添加源文件内容和编码utf-8 因为默是系统的本地时间-->
+        <javac srcdir="${src}" destdir="${build}/WEB-INF/classes" encoding="utf-8" classpathref="classpath" includeantruntime="on">
+        </javac>
+    </target>
+    <!--生成CBEUatTest.war包结构，此处是生成的war名称配置，建议和项目名一致-->
+    <target name="makewar" depends="complie">
+        <war warfile="${build}/TimsJenkinsTest.war" webxml="${build}/WEB-INF/web.xml">
+            <lib dir="${build}/WEB-INF/lib">
+                <include name="**" />
+            </lib>
+            <classes dir="${build}/WEB-INF/classes" />
+            <fileset dir="${build}" />
+        </war>
+    </target>
+</project>
