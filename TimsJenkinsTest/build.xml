@@ -2,6 +2,14 @@
 <project name="TimsJenkinsTest" basedir="." default="makewar">
     <property name="classpath_lib" value="WebContent/WEB-INF/lib" />
     <property name="sources" value="${basedir}/src" />
+
+    <!-- INT环境配置地址 -->
+    <property name="com.dev.dir" value="${basedir}/env/int"/>
+    <!-- UAT环境配置地址 -->
+    <property name="com.uat.dir" value="${basedir}/env/uat"/>
+    <!-- STAGE环境配置地址 -->
+    <property name="com.stage.dir" value="${basedir}/env/stage"/>
+
     <path id="classpath">
         <!--添加lib 中的jar 包到软件中-->
         <fileset dir="${classpath_lib}">
@@ -15,21 +23,27 @@
     <property name="debuglevel" value="source,lines,vars" />
     <property name="target" value="1.8" />
     <property name="source" value="1.8" />
+
     <target name="init">
         <!--该出value为war导出的路径 最后的效果是这样\CBEUatTest\build\CBEUatTest.war-->
         <property name="build" value="build/">
+        </property>
+        <property name="build-war" value="build-war/">
         </property>
         <property name="src" value="src">
         </property>
         <delete dir="${build}">
         </delete>
+        <delete dir="${build-war}">
+        </delete>
         <mkdir dir="${build}" />
+        <mkdir dir="${build-war}" />
         <mkdir dir="${build}\WEB-INF" />
         <mkdir dir="${build}\WEB-INF\classes" />
         <mkdir dir="${build}\WEB-INF\lib" />
         <copy todir="${build}">
             <fileset dir="${basedir}\WebContent">
-                <include name="WEB-INF/**" />
+               <include name="WEB-INF/**" />
                 <include name="**" />
             </fileset>
         </copy>
@@ -39,14 +53,46 @@
         <javac srcdir="${src}" destdir="${build}/WEB-INF/classes" encoding="utf-8" classpathref="classpath" includeantruntime="on">
         </javac>
     </target>
+    <!-- 通用拷贝环境差异文件 -->
+    <target name="copyEnvFile">
+        <copy todir="${build}" overwrite="true" preservelastmodified="true">
+            <fileset dir="${copyFormDir}" />
+        </copy>
+    </target>
     <!--生成CBEUatTest.war包结构，此处是生成的war名称配置，建议和项目名一致-->
     <target name="makewar" depends="complie">
-        <war warfile="${build}/TimsJenkinsTest.war" webxml="${build}/WEB-INF/web.xml">
+        <antcall target="copyEnvFile">
+            <param name="copyFormDir" value="${com.dev.dir}" />
+        </antcall>
+        <war warfile="${build-war}/TimsJenkinsTest.war" webxml="${build}/WEB-INF/web.xml">
             <lib dir="${build}/WEB-INF/lib">
                 <include name="**" />
             </lib>
             <classes dir="${build}/WEB-INF/classes" />
             <fileset dir="${build}" />
+            <exclude  name="war/**" />
+        </war>
+        <antcall target="copyEnvFile">
+            <param name="copyFormDir" value="${com.uat.dir}" />
+        </antcall>
+        <war warfile="${build-war}/TimsJenkinsTest-uat.war" webxml="${build}/WEB-INF/web.xml">
+            <lib dir="${build}/WEB-INF/lib">
+                <include name="**" />
+            </lib>
+            <classes dir="${build}/WEB-INF/classes" />
+            <fileset dir="${build}" />
+            <exclude  name="war/**" />
+        </war>
+        <antcall target="copyEnvFile">
+            <param name="copyFormDir" value="${com.stage.dir}" />
+        </antcall>
+        <war warfile="${build-war}/TimsJenkinsTest-stage.war" webxml="${build}/WEB-INF/web.xml">
+            <lib dir="${build}/WEB-INF/lib">
+                <include name="**" />
+            </lib>
+            <classes dir="${build}/WEB-INF/classes" />
+            <fileset dir="${build}" />
+            <exclude  name="war/**" />
         </war>
     </target>
 </project>
