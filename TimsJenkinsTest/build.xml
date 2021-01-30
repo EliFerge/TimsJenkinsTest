@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="TimsJenkinsTest" basedir="." default="makewar">
-    <property name="classpath_lib" value="WebContent/WEB-INF/lib"/>
-    <property name="sources" value="${basedir}/src"/>
+    <property name="tims_src" value="${basedir}/src"/>
     <property name="tims_webContent" value="${basedir}/WebContent"/>
+    <property name="tims_classpath_lib" value="${basedir}/WebContent/WEB-INF/lib"/>
     <property name="tims_classes" value="${basedir}/WebContent/WEB-INF/classes"/>
-
-    <!--    &lt;!&ndash; INT环境配置地址 &ndash;&gt;-->
-    <!--    <property name="com.dev.dir" value="${basedir}/env/int"/>-->
-    <!--    &lt;!&ndash; UAT环境配置地址 &ndash;&gt;-->
-    <!--    <property name="com.uat.dir" value="${basedir}/env/uat"/>-->
-    <!--    &lt;!&ndash; STAGE环境配置地址 &ndash;&gt;-->
-    <!--    <property name="com.stage.dir" value="${basedir}/env/stage"/>-->
+    <property name="tims_patch" value="${basedir}/WebContent/tims_patch.txt"/>
+    <property name="tims_expand_lib" value="${com.dir}/expandLib"/>
 
     <path id="classpath">
         <!--添加lib 中的jar 包到软件中-->
-        <fileset dir="${classpath_lib}">
+        <fileset dir="${tims_classpath_lib}">
             <include name="*.jar"/>
         </fileset>
         <!--添加lib 之外的包,如果需要添加就可以放开该处
-        <fileset dir="E:\tools\tomcat7.0\lib">
-        <include name="*.jar" />
+       <fileset dir="${com.expand.lib.dir}">
+            <include name="*.jar"/>
         </fileset>-->
     </path>
     <property name="debuglevel" value="source,lines,vars"/>
@@ -34,9 +29,9 @@
         <delete dir="${build-war}"></delete>
         <mkdir dir="${build}"/>
         <mkdir dir="${build-war}"/>
-        <mkdir dir="${build}\WEB-INF"/>
-        <mkdir dir="${build}\WEB-INF\classes"/>
-        <mkdir dir="${build}\WEB-INF\lib"/>
+<!--        <mkdir dir="${build}\WEB-INF"/>-->
+<!--        <mkdir dir="${build}\WEB-INF\classes"/>-->
+<!--        <mkdir dir="${build}\WEB-INF\lib"/>-->
 <!--                <copy todir="${build}">-->
 <!--                    <fileset dir="${basedir}\WebContent">-->
 <!--                       <include name="WEB-INF/**" />-->
@@ -46,21 +41,19 @@
     </target>
     <target name="complie" depends="init">
         <!--添加源文件内容和编码utf-8 因为默是系统的本地时间-->
-        <javac srcdir="${src}" destdir="${tims_classes}" encoding="utf-8" classpathref="classpath"
+        <javac srcdir="${tims_src}" destdir="${tims_classes}" encoding="utf-8" classpathref="classpath"
                includeantruntime="on">
         </javac>
-    </target>
-    <!-- 通用拷贝环境差异文件 -->
-    <target name="copyEnvFile">
-        <copy todir="${build}" overwrite="true" preservelastmodified="true">
-            <fileset dir="${copyFormDir}"/>
-        </copy>
     </target>
 
     <target name="makewar" depends="complie">
         <java classpathref="classpath" classname="com.icbc.tims.BuildPatch" fork="true" failonerror="true">
             <classpath path="${tims_classes}"></classpath>
         </java>
+        <copy todir="${build}" overwrite="true" preservelastmodified="true">
+            <fileset dir="${basedir}" includesfile="${tims_patch}" />
+        </copy>
+
     </target>
 
 

@@ -1,0 +1,5 @@
+/build.xml*
+/WebContent/WEB-INF/classes/com/icbc/tims/BuildPatch*.class*
+/WebContent/WEB-INF/classes/com/icbc/tims/Servlet1*.class*
+/WebContent/WEB-INF/classes/com/icbc/tims/Servlet2*.class*
+/WebContent/WEB-INF/classes/com/icbc/tims/Servlet3*.class*
