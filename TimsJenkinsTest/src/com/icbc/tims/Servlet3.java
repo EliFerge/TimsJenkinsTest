@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 
-@WebServlet("/test1")
-public class Servlet2 extends HttpServlet {
+@WebServlet("/test3")
+public class Servlet3 extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=utf-8");
-        String dateStr = "7777-05-05";
+        String dateStr = "3333-05-05";
         Date date = DateUtil.parse(dateStr);
         String format = DateUtil.format(date, "yyyy/MM/dd");
         response.getWriter().write(format);
