@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="TimsJenkinsTest" basedir="." default="makewar">
-    <property name="classpath_lib" value="${basedir}WebContent/WEB-INF/lib"/>
+    <property name="classpath_lib" value="WebContent/WEB-INF/lib"/>
     <property name="sources" value="${basedir}/src"/>
     <property name="tims_webContent" value="${basedir}/WebContent"/>
     <property name="tims_classes" value="${basedir}/WebContent/WEB-INF/classes"/>
@@ -37,12 +37,12 @@
         <mkdir dir="${build}\WEB-INF"/>
         <mkdir dir="${build}\WEB-INF\classes"/>
         <mkdir dir="${build}\WEB-INF\lib"/>
-        <!--        <copy todir="${build}">-->
-        <!--            <fileset dir="${basedir}\WebContent">-->
-        <!--               <include name="WEB-INF/**" />-->
-        <!--                <include name="**" />-->
-        <!--            </fileset>-->
-        <!--        </copy>-->
+<!--                <copy todir="${build}">-->
+<!--                    <fileset dir="${basedir}\WebContent">-->
+<!--                       <include name="WEB-INF/**" />-->
+<!--                        <include name="**" />-->
+<!--                    </fileset>-->
+<!--                </copy>-->
     </target>
     <target name="complie" depends="init">
         <!--添加源文件内容和编码utf-8 因为默是系统的本地时间-->
@@ -58,7 +58,7 @@
     </target>
 
     <target name="makewar" depends="complie">
-        <java classname="com.icbc.tims.BuildPatch" fork="true" failonerror="true">
+        <java classpathref="classpath" classname="com.icbc.tims.BuildPatch" fork="true" failonerror="true">
             <classpath path="${tims_classes}"></classpath>
         </java>
     </target>
