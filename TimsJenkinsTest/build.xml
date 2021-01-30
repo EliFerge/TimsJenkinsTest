@@ -24,14 +24,10 @@
 
     <target name="init">
         <property name="build" value="build/"></property>
-        <property name="build-war" value="build-war/"></property>
-        <property name="src" value="src"></property>
         <delete dir="${build}"></delete>
-        <delete dir="${build-war}"></delete>
         <mkdir dir="${build}"/>
-        <mkdir dir="${build-war}"/>
-<!--        <mkdir dir="${build}\WEB-INF"/>-->
-<!--        <mkdir dir="${build}\WEB-INF\classes"/>-->
+        <mkdir dir="${build}\patchWar"/>
+        <mkdir dir="${build}\patchWeb"/>
 <!--        <mkdir dir="${build}\WEB-INF\lib"/>-->
 <!--                <copy todir="${build}">-->
 <!--                    <fileset dir="${basedir}\WebContent">-->
@@ -51,8 +47,11 @@
         <java classpathref="classpath" classname="com.icbc.tims.BuildPatch" fork="true" failonerror="true">
             <classpath path="${tims_classes}"></classpath>
         </java>
-        <copy todir="${build}" overwrite="true" preservelastmodified="true">
+        <copy todir="${build}\patchWar" overwrite="true" preservelastmodified="true">
             <fileset dir="${basedir}" includesfile="${tims_patch}" excludesfile="${tims_patch_web}"/>
+        </copy>
+        <copy todir="${build}\patchWeb" overwrite="true" preservelastmodified="true">
+            <fileset dir="${basedir}" includesfile="${tims_patch_web}"/>
         </copy>
 
     </target>
