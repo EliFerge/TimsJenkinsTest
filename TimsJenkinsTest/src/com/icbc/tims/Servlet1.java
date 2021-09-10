@@ -20,12 +20,12 @@ public class Servlet1 extends HttpServlet {
         Date date = DateUtil.parse(dateStr);
         String format = DateUtil.format(date, "yyyy/MM/dd");
 
-        new Thread(() -> {
-            List<String> list = new ArrayList<>();
-            while (true) {
-                list.add(new String("你弄啊是个浓缩的内功的giaso"));
-            }
-        }).start();
+//        new Thread(() -> {
+//            List<String> list = new ArrayList<>();
+//            while (true) {
+//                list.add(new String("你弄啊是个浓缩的内功的giaso"));
+//            }
+//        }).start();
 
         response.getWriter().write(format);
 
